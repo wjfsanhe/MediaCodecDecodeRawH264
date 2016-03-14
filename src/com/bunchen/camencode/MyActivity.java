@@ -203,10 +203,10 @@ public class MyActivity extends Activity implements SurfaceHolder.Callback {
 								+ frames.get(i).frameData.length);
 
 						int inIndex = 0;
-						while ((inIndex = decoder.dequeueInputBuffer(1)) < 0);
-
+						while ((inIndex = decoder.dequeueInputBuffer(1)) < 0);//判断解码器输入队列缓冲区有多少个buffer==，inIndex。
+						
 						if (inIndex >= 0) {
-							ByteBuffer buffer = inputBuffers[inIndex];
+							ByteBuffer buffer = inputBuffers[inIndex];//取出解码器输入队列缓冲区最后一个buffer
 							buffer.clear();
 							int sampleSize = data.length;
 							if (sampleSize < 0) {
@@ -221,14 +221,14 @@ public class MyActivity extends Activity implements SurfaceHolder.Callback {
 
 //								buffer = ByteBuffer.allocate(data.length);
 								buffer.clear();
-								buffer.put(data);
+								buffer.put(data);//向最后一个缓冲区inIndex中放入一帧数据。
 								decoder.queueInputBuffer(inIndex, 0,
-										sampleSize, 0, 0);
+										sampleSize, 0, 0);//
 							}
 
 							BufferInfo info = new BufferInfo();
 							int outIndex = decoder.dequeueOutputBuffer(info,
-									100000);
+									100000);//出队列缓冲区的信息
 
 							switch (outIndex) {
 							case MediaCodec.INFO_OUTPUT_BUFFERS_CHANGED:
@@ -266,7 +266,7 @@ public class MyActivity extends Activity implements SurfaceHolder.Callback {
 								 * e.printStackTrace(); break; } }
 								 */
 
-								decoder.releaseOutputBuffer(outIndex, true);
+								decoder.releaseOutputBuffer(outIndex, true);//冲缓冲区的出队列，然后解码显示到surfaceview上。
 								break;
 							}
 							i++;
